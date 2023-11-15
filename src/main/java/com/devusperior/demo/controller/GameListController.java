@@ -1,8 +1,8 @@
 package com.devusperior.demo.controller;
 
 import com.devusperior.demo.DTO.GameDTO;
-import com.devusperior.demo.DTO.GameFullDTO;
-import com.devusperior.demo.entities.Game;
+import com.devusperior.demo.DTO.GameListDTO;
+import com.devusperior.demo.services.GameListServices;
 import com.devusperior.demo.services.GameServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,20 +13,23 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/games")
-public class GameController {
+@RequestMapping(value = "/list")
+public class GameListController {
+    @Autowired
+    private GameListServices gameListServices;
+
     @Autowired
     private GameServices gameServices;
 
     @GetMapping
-    public List<GameDTO> findAll(){
-        List<GameDTO> listGame = gameServices.findAll();
-        return listGame;
+    public List<GameListDTO> findAll(){
+        List<GameListDTO> list = gameListServices.findAll();
+        return list;
     }
 
-    @GetMapping(value = "/{id}")
-    public GameFullDTO findById(@PathVariable Long id){
-        GameFullDTO returnId = gameServices.findById(id);
-        return returnId;
+    @GetMapping(value = "/{listId}/games")
+    public List<GameDTO> findAllbyList(@PathVariable Long listId){
+        List<GameDTO> listDto = gameServices.findByList(listId);
+        return listDto;
     }
 }
